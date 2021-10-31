@@ -1,0 +1,19 @@
+{
+  "name": "tbank",
+  "version": "1.0.0",
+  "description": "T-Banking-System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tim-Gabrikowski/TBank.git"
+  },
+  "author": "Tim Gabrikowski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tim-Gabrikowski/TBank/issues"
+  },
+  "homepage": "https://github.com/Tim-Gabrikowski/TBank#readme"
+}
