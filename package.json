@@ -1,19 +1,26 @@
 {
-  "name": "tbank",
-  "version": "1.0.0",
-  "description": "T-Banking-System",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Tim-Gabrikowski/TBank.git"
-  },
-  "author": "Tim Gabrikowski",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Tim-Gabrikowski/TBank/issues"
-  },
-  "homepage": "https://github.com/Tim-Gabrikowski/TBank#readme"
+	"name": "tbank",
+	"version": "1.0.0",
+	"description": "T-Banking-System",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Tim-Gabrikowski/TBank.git"
+	},
+	"author": "Tim Gabrikowski",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Tim-Gabrikowski/TBank/issues"
+	},
+	"homepage": "https://github.com/Tim-Gabrikowski/TBank#readme",
+	"dependencies": {
+		"dotenv": "^16.0.1",
+		"express": "^4.17.1",
+		"nodemon": "^2.0.14",
+		"typescript": "^4.4.4"
+	}
 }
