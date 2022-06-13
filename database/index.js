@@ -28,6 +28,9 @@ var Account = con.define(
 		userId: {
 			type: Secuelize.INTEGER,
 		},
+		accName: {
+			type: Secuelize.STRING,
+		},
 	},
 	{
 		paranoid: true,

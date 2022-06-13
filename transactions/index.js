@@ -54,33 +54,48 @@ router.post("/accept", authenticateToken, (req, res) => {
 
 								console.log(fromAccount, toAccount);
 
-								fromAccount.credits =
-									fromAccount.credits - transaction.amount;
-								toAccount.credits =
-									toAccount.credits + transaction.amount;
-
-								database
-									.updateAccount(fromAccount)
-									.then((resA) => {
-										console.log("updateAccount(from)");
-										database
-											.updateAccount(toAccount)
-											.then((resB) => {
-												console.log(
-													"updateAccount(to)"
-												);
-												transaction.status = 3;
-												database
-													.setTransaction(transaction)
-													.then((resC) => {
-														console.log(
-															"setTransaction"
-														);
-														res.send(transaction);
-														console.log("res send");
-													});
-											});
+								if (fromAccount.credits < transaction.amount) {
+									res.status(400).send({
+										message: "not enougth money!",
 									});
+									transaction.status = 4;
+									database.setTransaction(transaction);
+								} else {
+									fromAccount.credits =
+										fromAccount.credits -
+										transaction.amount;
+									toAccount.credits =
+										toAccount.credits + transaction.amount;
+
+									database
+										.updateAccount(fromAccount)
+										.then((resA) => {
+											console.log("updateAccount(from)");
+											database
+												.updateAccount(toAccount)
+												.then((resB) => {
+													console.log(
+														"updateAccount(to)"
+													);
+													transaction.status = 3;
+													database
+														.setTransaction(
+															transaction
+														)
+														.then((resC) => {
+															console.log(
+																"setTransaction"
+															);
+															res.send(
+																transaction
+															);
+															console.log(
+																"res send"
+															);
+														});
+												});
+										});
+								}
 							});
 					});
 			});

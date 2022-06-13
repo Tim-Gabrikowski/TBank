@@ -34,14 +34,15 @@ router.get("/one", authenticateToken, (req, res) => {
 	});
 });
 router.post("/new", authenticateToken, (req, res) => {
-	const uid = req.body.user_id;
+	const { user_id, name } = req.body;
 	const accountNumber = getRandomNumberBetween(100000, 999999);
 	const credits = 0;
 	database
 		.createNewAccount({
 			accountNumber: accountNumber,
 			credits: credits,
-			userId: uid,
+			userId: user_id,
+			accName: name,
 		})
 		.then((account) => {
 			res.send(account);
