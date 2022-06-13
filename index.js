@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 const accRouter = require("./accounts");
 const softwareRouter = require("./auth");
@@ -9,6 +10,7 @@ const transactionsRouter = require("./transactions");
 require("dotenv").config();
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/accounts", accRouter);
 app.use("/software", softwareRouter.router);
