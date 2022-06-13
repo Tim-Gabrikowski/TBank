@@ -19,6 +19,6 @@ app.get("/", (req, res) => {
 	res.send({ path: "/", ok: true });
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, "0.0.0.0", () => {
 	console.log("Server on port:", process.env.PORT);
 });
