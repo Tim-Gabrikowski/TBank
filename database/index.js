@@ -65,6 +65,9 @@ var Transaction = con.define("transaction", {
 	softwareName: {
 		type: Secuelize.STRING,
 	},
+	userId: {
+		type: Secuelize.INTEGER,
+	},
 });
 
 Account.hasOne(Token);
@@ -113,6 +116,9 @@ function addTransaction(transaction) {
 function getTransactions(accountNum) {
 	return Transaction.findAll({ where: { fromAcc: accountNum } });
 }
+function getUserTransactions(uid) {
+	return Transaction.findAll({ where: { userId: uid } });
+}
 function getTransaction(id) {
 	return Transaction.findAll({ where: { id: id } });
 }
@@ -133,4 +139,5 @@ module.exports = {
 	getTransaction,
 	setTransaction,
 	updateAccount,
+	getUserTransactions,
 };

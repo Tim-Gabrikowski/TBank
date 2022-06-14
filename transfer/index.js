@@ -14,6 +14,7 @@ router.post("/", authenticateToken, (req, res) => {
 				toAcc: to,
 				amount: amount,
 				status: 1,
+				userId: userId,
 				softwareName: req.software.softwareName,
 			};
 			database.addTransaction(transaction).then((backTrtansaction) => {
@@ -29,6 +30,7 @@ router.post("/", authenticateToken, (req, res) => {
 						toAcc: softwareAcc[0].accountNumber,
 						amount: amount,
 						status: 1,
+						userId: userId,
 						softwareName: req.software.softwareName,
 					};
 					database

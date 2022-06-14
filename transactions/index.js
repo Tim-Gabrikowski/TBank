@@ -5,9 +5,19 @@ const { authenticateToken } = require("../auth");
 
 router.get("/get", authenticateToken, (req, res) => {
 	const accountNum = req.query.accNum;
-	database.getTransactions(accountNum).then((transactions) => {
-		res.send(transactions);
-	});
+	const userId = req.query.uid;
+
+	if (typeof accountNum != "undefined") {
+		database.getTransactions(accountNum).then((transactions) => {
+			res.send(transactions);
+		});
+	} else if (typeof userId != "undefined") {
+		database.getUserTransactions(userId).then((transactions) => {
+			res.send(transactions);
+		});
+	} else {
+		res.status(400).send({ message: "no search params" });
+	}
 });
 router.get("/status", authenticateToken, (req, res) => {
 	var { transactionId } = req.query;
