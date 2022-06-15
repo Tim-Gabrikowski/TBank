@@ -5,6 +5,10 @@ const { authenticateToken } = require("../auth");
 
 router.post("/", authenticateToken, (req, res) => {
 	const { from, to, amount, userId } = req.body;
+	if (amount <= 0)
+		return res
+			.status(400)
+			.send({ message: "only positive amount of credits" });
 
 	database.getAccountByNumber(from).then((accounts) => {
 		if (req.software.trusted) {
