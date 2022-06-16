@@ -45,7 +45,8 @@ router.post("/accept", authenticateToken, (req, res) => {
 				res.status(403).send({ message: "account number not correct" });
 			if (transaction.status != 1)
 				return res.status(403).send({ message: "wrong transaction" });
-
+			if (transaction.fromAcc == transaction.toAcc)
+				return res.status(403).send({ message: "don't do so!" });
 			transaction.status = 2;
 
 			console.log(transaction);
