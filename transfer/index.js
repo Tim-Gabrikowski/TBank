@@ -9,6 +9,7 @@ router.post("/", authenticateToken, (req, res) => {
 		return res
 			.status(400)
 			.send({ message: "only positive amount of credits" });
+	if (from == to) return res.status(403).send({ message: "don't do so" });
 
 	database.getAccountByNumber(from).then((accounts) => {
 		if (req.software.trusted) {
