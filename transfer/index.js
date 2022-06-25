@@ -4,7 +4,7 @@ const database = require("../database");
 const { authenticateToken } = require("../auth");
 
 router.post("/", authenticateToken, (req, res) => {
-	const { from, to, amount, userId } = req.body;
+	const { from, to, amount, userId, reason } = req.body;
 	if (amount <= 0)
 		return res
 			.status(400)
@@ -21,6 +21,7 @@ router.post("/", authenticateToken, (req, res) => {
 				status: 1,
 				userId: userId,
 				softwareName: req.software.softwareName,
+				reason: reason,
 			};
 			database.addTransaction(transaction).then((backTrtansaction) => {
 				res.send(backTrtansaction);
@@ -37,6 +38,7 @@ router.post("/", authenticateToken, (req, res) => {
 						status: 1,
 						userId: userId,
 						softwareName: req.software.softwareName,
+						reason: reason,
 					};
 					database
 						.addTransaction(transaction)

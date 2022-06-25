@@ -1,9 +1,9 @@
-const Secuelize = require("sequelize");
+const Sequelize = require("sequelize");
 require("dotenv").config();
 
 const createUserOnSync = false;
 
-var con = new Secuelize(
+var con = new Sequelize(
 	process.env.DATABASE_NAME,
 	process.env.DATABASE_USERNAME,
 	process.env.DATABASE_PASSWORD,
@@ -19,17 +19,17 @@ var Account = con.define(
 	"account",
 	{
 		accountNumber: {
-			type: Secuelize.INTEGER,
+			type: Sequelize.INTEGER,
 			unique: "accNum",
 		},
 		credits: {
-			type: Secuelize.INTEGER,
+			type: Sequelize.INTEGER,
 		},
 		userId: {
-			type: Secuelize.INTEGER,
+			type: Sequelize.INTEGER,
 		},
 		accName: {
-			type: Secuelize.STRING,
+			type: Sequelize.STRING,
 		},
 	},
 	{
@@ -38,35 +38,38 @@ var Account = con.define(
 );
 var Token = con.define("token", {
 	softwareName: {
-		type: Secuelize.STRING,
+		type: Sequelize.STRING,
 	},
 	token: {
-		type: Secuelize.STRING,
+		type: Sequelize.STRING,
 	},
 	trusted: {
-		type: Secuelize.BOOLEAN,
+		type: Sequelize.BOOLEAN,
 		default: false,
 	},
 });
 var Transaction = con.define("transaction", {
 	amount: {
-		type: Secuelize.INTEGER,
+		type: Sequelize.INTEGER,
 	},
 	status: {
-		type: Secuelize.INTEGER,
+		type: Sequelize.INTEGER,
 		default: 1,
 	},
 	fromAcc: {
-		type: Secuelize.INTEGER,
+		type: Sequelize.INTEGER,
 	},
 	toAcc: {
-		type: Secuelize.INTEGER,
+		type: Sequelize.INTEGER,
 	},
 	softwareName: {
-		type: Secuelize.STRING,
+		type: Sequelize.STRING,
 	},
 	userId: {
-		type: Secuelize.INTEGER,
+		type: Sequelize.INTEGER,
+	},
+	reason: {
+		type: Sequelize.STRING,
 	},
 });
 
