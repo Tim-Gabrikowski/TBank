@@ -71,6 +71,36 @@ var Transaction = con.define("transaction", {
 	reason: {
 		type: Sequelize.STRING,
 	},
+	isGiftCard: {
+		type: Sequelize.BOOLEAN,
+		defaultValue: false,
+	},
+	giftCardId: {
+		type: Sequelize.INTEGER,
+	},
+});
+const GiftCard = con.define("giftcard", {
+	code: {
+		type: Sequelize.STRING,
+		unique: "code",
+		allowNull: false,
+	},
+	amount: {
+		type: Sequelize.INTEGER,
+	},
+	reason: {
+		type: Sequelize.STRING,
+	},
+	used: {
+		type: Sequelize.BOOLEAN,
+		defaultValue: false,
+		allowNull: false,
+	},
+	activated: {
+		type: Sequelize.BOOLEAN,
+		defaultValue: false,
+		allowNull: false,
+	},
 });
 
 Account.hasOne(Token);
@@ -128,6 +158,18 @@ function getTransaction(id) {
 function setTransaction(transaction) {
 	return Transaction.update(transaction, { where: { id: transaction.id } });
 }
+function createGiftCard(card) {
+	return GiftCard.create(card);
+}
+function getGiftCard(code) {
+	return GiftCard.findAll({ where: { code: code } });
+}
+function getGiftCardId(id) {
+	return GiftCard.findAll({ where: { id: id } });
+}
+function updateGiftCard(card) {
+	return GiftCard.update(card, { where: { id: card.id } });
+}
 
 module.exports = {
 	getMyAccounts,
@@ -143,4 +185,8 @@ module.exports = {
 	setTransaction,
 	updateAccount,
 	getUserTransactions,
+	createGiftCard,
+	getGiftCard,
+	getGiftCardId,
+	updateGiftCard,
 };

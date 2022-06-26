@@ -57,57 +57,107 @@ router.post("/accept", authenticateToken, (req, res) => {
 					.then((fromAccounts) => {
 						console.log("getAccountByNumber(from)");
 						var fromAccount = fromAccounts[0].dataValues;
-						database
-							.getAccountByNumber(transaction.toAcc)
-							.then((toAccounts) => {
-								console.log("getAccountByNumber(to)");
-								var toAccount = toAccounts[0].dataValues;
 
-								console.log(fromAccount, toAccount);
+						if (!transaction.isGiftCard) {
+							database
+								.getAccountByNumber(transaction.toAcc)
+								.then((toAccounts) => {
+									console.log("getAccountByNumber(to)");
+									var toAccount = toAccounts[0].dataValues;
 
-								if (fromAccount.credits < transaction.amount) {
-									res.status(400).send({
-										message: "not enougth money!",
-									});
-									transaction.status = 4;
-									database.setTransaction(transaction);
-								} else {
-									fromAccount.credits =
-										fromAccount.credits -
-										transaction.amount;
-									toAccount.credits =
-										toAccount.credits + transaction.amount;
+									console.log(fromAccount, toAccount);
 
-									database
-										.updateAccount(fromAccount)
-										.then((resA) => {
-											console.log("updateAccount(from)");
-											database
-												.updateAccount(toAccount)
-												.then((resB) => {
-													console.log(
-														"updateAccount(to)"
-													);
-													transaction.status = 3;
-													database
-														.setTransaction(
-															transaction
-														)
-														.then((resC) => {
-															console.log(
-																"setTransaction"
-															);
-															res.send(
-																transaction
-															);
-															console.log(
-																"res send"
-															);
-														});
-												});
+									if (
+										fromAccount.credits < transaction.amount
+									) {
+										res.status(400).send({
+											message: "not enougth money!",
 										});
-								}
-							});
+										transaction.status = 4;
+										database.setTransaction(transaction);
+									} else {
+										fromAccount.credits =
+											fromAccount.credits -
+											transaction.amount;
+										toAccount.credits =
+											toAccount.credits +
+											transaction.amount;
+
+										database
+											.updateAccount(fromAccount)
+											.then((resA) => {
+												console.log(
+													"updateAccount(from)"
+												);
+												database
+													.updateAccount(toAccount)
+													.then((resB) => {
+														console.log(
+															"updateAccount(to)"
+														);
+														transaction.status = 3;
+														database
+															.setTransaction(
+																transaction
+															)
+															.then((resC) => {
+																console.log(
+																	"setTransaction"
+																);
+																res.send(
+																	transaction
+																);
+																console.log(
+																	"res send"
+																);
+															});
+													});
+											});
+									}
+								});
+						} else {
+							database
+								.getGiftCardId(transaction.giftCardId)
+								.then((cards) => {
+									var card = cards[0].dataValues;
+									if (cards.length != 1)
+										return res
+											.status(400)
+											.send({ message: "No gift card" });
+
+									if (
+										fromAccount.credits < transaction.amount
+									) {
+										res.status(400).send({
+											message: "not enougth money!",
+										});
+										transaction.status = 4;
+										database.setTransaction(transaction);
+									} else {
+										fromAccount.credits =
+											fromAccount.credits - card.amount;
+										database
+											.updateAccount(fromAccount)
+											.then((_) => {
+												card.activated = true;
+												database
+													.updateGiftCard(card)
+													.then((_) => {
+														transaction.status = 3;
+														database
+															.setTransaction(
+																transaction
+															)
+															.then((_) => {
+																res.send(
+																	transaction
+																);
+															});
+													});
+											});
+									}
+								});
+						}
 					});
 			});
 		});

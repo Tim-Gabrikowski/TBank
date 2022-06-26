@@ -6,6 +6,7 @@ const accRouter = require("./accounts");
 const softwareRouter = require("./auth");
 const transferRouter = require("./transfer");
 const transactionsRouter = require("./transactions");
+const giftCardsRouter = require("./giftCards");
 
 require("dotenv").config();
 
@@ -16,6 +17,7 @@ app.use("/accounts", accRouter);
 app.use("/software", softwareRouter.router);
 app.use("/transfer", transferRouter);
 app.use("/transactions", transactionsRouter);
+app.use("/giftcards", giftCardsRouter);
 
 app.get("/", (req, res) => {
 	res.send({ path: "/", ok: true });
