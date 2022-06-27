@@ -4,7 +4,7 @@ const database = require("../database");
 const { authenticateToken } = require("../auth");
 
 router.post("/", authenticateToken, (req, res) => {
-	const { from, to, amount, userId, reason } = req.body;
+	const { from, to, amount, userKey, reason } = req.body;
 	if (amount <= 0)
 		return res
 			.status(400)
@@ -13,13 +13,13 @@ router.post("/", authenticateToken, (req, res) => {
 
 	database.getAccountByNumber(from).then((accounts) => {
 		if (req.software.trusted) {
-			if (accounts[0].userId != userId) return res.sendStatus(403);
+			if (accounts[0].userKey != userKey) return res.sendStatus(403);
 			var transaction = {
 				fromAcc: from,
 				toAcc: to,
 				amount: amount,
 				status: 1,
-				userId: userId,
+				userKey: userKey,
 				softwareName: req.software.softwareName,
 				reason: reason,
 			};
@@ -27,7 +27,7 @@ router.post("/", authenticateToken, (req, res) => {
 				res.send(backTrtansaction);
 			});
 		} else {
-			if (accounts[0].userId != userId) return res.sendStatus(403);
+			if (accounts[0].userKey != userKey) return res.sendStatus(403);
 			database
 				.getAccountById(req.software.accountId)
 				.then((softwareAcc) => {
@@ -36,7 +36,7 @@ router.post("/", authenticateToken, (req, res) => {
 						toAcc: softwareAcc[0].accountNumber,
 						amount: amount,
 						status: 1,
-						userId: userId,
+						userKey: userKey,
 						softwareName: req.software.softwareName,
 						reason: reason,
 					};

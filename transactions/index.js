@@ -5,14 +5,14 @@ const { authenticateToken } = require("../auth");
 
 router.get("/get", authenticateToken, (req, res) => {
 	const accountNum = req.query.accNum;
-	const userId = req.query.uid;
+	const userKey = req.query.uid;
 
 	if (typeof accountNum != "undefined") {
 		database.getTransactions(accountNum).then((transactions) => {
 			res.send(transactions);
 		});
-	} else if (typeof userId != "undefined") {
-		database.getUserTransactions(userId).then((transactions) => {
+	} else if (typeof userKey != "undefined") {
+		database.getUserTransactions(userKey).then((transactions) => {
 			res.send(transactions);
 		});
 	} else {
@@ -27,7 +27,7 @@ router.get("/status", authenticateToken, (req, res) => {
 	});
 });
 router.post("/accept", authenticateToken, (req, res) => {
-	const { transactionId, fromAcc, userId } = req.body;
+	const { transactionId, fromAcc, userKey } = req.body;
 	const software = req.software;
 	console.log(software);
 	if (software.trusted != true)
@@ -35,7 +35,7 @@ router.post("/accept", authenticateToken, (req, res) => {
 
 	database.getAccountByNumber(fromAcc).then((accounts) => {
 		var account = accounts[0];
-		if (userId != account.userId)
+		if (userKey != account.userKey)
 			return res.status(403).send({ message: "not owner of account" });
 
 		database.getTransaction(transactionId).then((transactions) => {

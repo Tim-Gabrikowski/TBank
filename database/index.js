@@ -25,8 +25,8 @@ var Account = con.define(
 		credits: {
 			type: Sequelize.INTEGER,
 		},
-		userId: {
-			type: Sequelize.INTEGER,
+		userKey: {
+			type: Sequelize.STRING,
 		},
 		accName: {
 			type: Sequelize.STRING,
@@ -65,8 +65,8 @@ var Transaction = con.define("transaction", {
 	softwareName: {
 		type: Sequelize.STRING,
 	},
-	userId: {
-		type: Sequelize.INTEGER,
+	userKey: {
+		type: Sequelize.STRING,
 	},
 	reason: {
 		type: Sequelize.STRING,
@@ -120,7 +120,7 @@ con.sync({ alter: true })
 	});
 
 function getMyAccounts(uid) {
-	return Account.findAll({ where: { userId: uid } });
+	return Account.findAll({ where: { userKey: uid } });
 }
 function registerSoftware(software) {
 	return Token.create(software);
@@ -150,7 +150,7 @@ function getTransactions(accountNum) {
 	return Transaction.findAll({ where: { fromAcc: accountNum } });
 }
 function getUserTransactions(uid) {
-	return Transaction.findAll({ where: { userId: uid } });
+	return Transaction.findAll({ where: { userKey: uid } });
 }
 function getTransaction(id) {
 	return Transaction.findAll({ where: { id: id } });

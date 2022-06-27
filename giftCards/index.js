@@ -16,7 +16,7 @@ router.get("/card/:code", (req, res) => {
 	});
 });
 router.post("/new", authenticateToken, (req, res) => {
-	const { amount, reason, fromAcc, userId } = req.body;
+	const { amount, reason, fromAcc, userKey } = req.body;
 
 	if (amount <= 0)
 		return res
@@ -28,7 +28,7 @@ router.post("/new", authenticateToken, (req, res) => {
 	const code = randomBytes(8).toString("hex");
 
 	database.getAccountByNumber(fromAcc).then((accs) => {
-		if ((accs[0].dataValues.userId = !userId))
+		if ((accs[0].dataValues.userKey = !userKey))
 			return res.status(400).send({ message: "account not matching" });
 		var giftcard = { amount: amount, code: code, reason, reason };
 		database.createGiftCard(giftcard).then((backCard) => {
@@ -38,7 +38,7 @@ router.post("/new", authenticateToken, (req, res) => {
 
 				amount: amount,
 				status: 1,
-				userId: userId,
+				userKey: userKey,
 				softwareName: req.software.softwareName,
 				reason: "Giftcard",
 				isGiftCard: true,
