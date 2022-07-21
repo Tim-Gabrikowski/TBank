@@ -3,17 +3,12 @@ require("dotenv").config();
 
 const createUserOnSync = false;
 
-var con = new Sequelize(
-	process.env.DATABASE_NAME,
-	process.env.DATABASE_USERNAME,
-	process.env.DATABASE_PASSWORD,
-	{
-		port: process.env.DATABASE_PORT,
-		host: process.env.DATABASE_HOST,
-		logging: console.log,
-		dialect: "mysql",
-	}
-);
+var con = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
+	port: process.env.DATABASE_PORT,
+	host: process.env.DATABASE_HOST,
+	logging: console.log,
+	dialect: "mysql",
+});
 
 var Account = con.define(
 	"account",
